@@ -23,7 +23,8 @@ defmodule Lab1.MixProject do
   defp deps do
     [
       {:eventsource_ex, "~> 0.0.2"},
-      {:httpoison, "~> 0.11.2"}
+      {:poison, "~> 3.1"},
+      {:json, "~> 1.4.1"}
     ]
   end
 end

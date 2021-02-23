@@ -11,6 +11,15 @@ defmodule Worker do
 
   def handle_cast({:worker, tweet}, state) do
     IO.inspect(%{"Tweet: " => tweet})
+    # get_tweet_text(tweet)
     {:noreply, state}
+  end
+
+  defp get_tweet_text(tweet) do
+    # IEx.Info.info(tweet) |> IO.inspect()
+    map = Map.from_struct(tweet)
+    {:ok, json} = JSON.decode(map.data)
+    text = json["message"]["tweet"]["text"]
+    IO.inspect(%{"Tweet text: " => text})
   end
 end
