@@ -18,12 +18,12 @@ defmodule Worker do
   defp get_tweet_text(tweet) do
     # IEx.Info.info(tweet) |> IO.inspect()
     if String.contains?(tweet.data, "panic") do
-      IO.inspect(%{"Panic message: " => tweet})
+      IO.inspect(%{"Panic message:" => tweet})
     else
       map = Map.from_struct(tweet)
       {:ok, json} = JSON.decode(map.data)
       text = json["message"]["tweet"]["text"]
-      IO.inspect(%{"Tweet text: " => text})
+      IO.inspect(%{"Tweet text:" => text})
     end
   end
 end

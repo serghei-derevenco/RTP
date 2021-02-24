@@ -1,8 +1,16 @@
 defmodule Connection do
 
   def start_link(url) do
-    {:ok, _pid} = EventsourceEx.new(url, stream_to: self())
-    get_tweet()
+    func = spawn(__MODULE__, :get_tweet, [])
+    {:ok, pid} = EventsourceEx.new(url, stream_to: func)
+
+    Process.monitor(pid)
+    
+    receive do
+      error ->
+        {:ok, pid} = EventsourceEx.new(url, stream_to: func)
+    end
+
   end
 
   def get_tweet() do
