@@ -7,8 +7,9 @@
 1. Reading 2 SSE streams of actual Twitter API tweets in JSON format using the following project: https://github.com/cwc/eventsource_ex;  
 2. Creating the following entitties: Worker, Router, Connection, WorkerSupervisor;  
 3. WorkerSupervisor was implemented as DynamicSupervisor;  
-4. Also was implemented feature for getting text of every tweet. But it has some bugs which I will try to fix later.  
-5. Link to screencast: https://youtu.be/Id0xd65yqKA  
+4. Also was implemented feature for getting text of every tweet.
+5. Solved bug with SSE connection restarting.  
+5. Link to screencast: https://youtu.be/PRkw0sKxn7c  
 -----
 ## To use
 * Make a pull request to a remote Docker container: `docker pull alexburlacu/rtp-server:faf18x`.
