@@ -17,4 +17,8 @@ defmodule WorkerSupervisor do
   def stop_worker(worker_pid) do
     DynamicSupervisor.terminate_child(__MODULE__, worker_pid)
   end
+
+  def count_workers() do
+    DynamicSupervisor.count_children(__MODULE__)
+  end
 end
