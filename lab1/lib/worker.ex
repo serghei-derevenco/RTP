@@ -6,24 +6,37 @@ defmodule Worker do
   end
 
   def init(tweet) do
-    {:ok, tweet}
+    {:ok, %{name: tweet}}
   end
 
-  def handle_cast({:worker, tweet}, state) do
-    # IO.inspect(%{"Tweet: " => tweet.data})
-    get_tweet_text(tweet)
-    {:noreply, state}
+  def handle_cast({:worker, tweet}, _state) do
+    show_tweet(tweet)
+    {:noreply, %{}}
   end
 
-  defp get_tweet_text(tweet) do
-    # IEx.Info.info(tweet) |> IO.inspect()
+  defp parse_tweet(tweet) do
+    chars = [".", ",", "!", "?", ":", ";"]
+    map = Map.from_struct(tweet)
+    {:ok, json} = JSON.decode(map.data)
+    json["message"]["tweet"]["text"]
+    |> String.replace(chars, "")
+    |> String.split(" ", trim: true)
+  end
+
+  defp calculate_values(emotions) do
+    emotions
+    |> Enum.reduce(0, fn em, acc -> Emotions.get_value(em) + acc end)
+    |> Kernel./(length(emotions))
+  end
+
+  defp show_tweet(tweet) do
     if String.contains?(tweet.data, "panic") do
       IO.inspect(%{"Panic message:" => tweet})
     else
-      map = Map.from_struct(tweet)
-      {:ok, json} = JSON.decode(map.data)
-      text = json["message"]["tweet"]["text"]
-      IO.inspect(%{"Tweet text:" => text})
+      tweet
+      |> parse_tweet()
+      |> calculate_values()
+      |> IO.inspect()
     end
   end
 end
