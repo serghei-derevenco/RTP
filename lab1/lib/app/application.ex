@@ -6,6 +6,14 @@ defmodule App.Application do
     children = [
 
       %{
+        id: EngagementWorker,
+        start: {EngagementWorker, :start_link, [""]}
+      },
+      %{
+        id: EngagementSupervisor,
+        start: {EngagementSupervisor, :start_link, [""]}
+      },
+      %{
         id: Worker,
         start: {Worker, :start_link, [""]}
       },

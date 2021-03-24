@@ -12,6 +12,10 @@ defmodule Router do
   def handle_cast({:router, message}, state) do
     WorkerSupervisor.start_worker(message)
     GenServer.cast(Worker, {:worker, message})
+
+    EngagementSupervisor.start_worker(message)
+    GenServer.cast(EngagementWorker, {:engagement_worker, message})
+
     {:noreply, state}
   end
 end

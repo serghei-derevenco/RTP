@@ -10,7 +10,7 @@ defmodule Worker do
   end
 
   def handle_cast({:worker, tweet}, _state) do
-    show_tweet(tweet)
+    #show_score(tweet)
     {:noreply, %{}}
   end
 
@@ -29,7 +29,7 @@ defmodule Worker do
     |> Kernel./(length(emotions))
   end
 
-  defp show_tweet(tweet) do
+  defp show_score(tweet) do
     if String.contains?(tweet.data, "panic") do
       IO.inspect(%{"Panic message:" => tweet})
     else
