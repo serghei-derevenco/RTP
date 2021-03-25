@@ -20,20 +20,24 @@ defmodule EngagementWorker do
     json
   end
 
-  defp calculate_ratio(tweet) do
+  defp calculate_ratio(favourites, retweets, followers) do
+    if followers != 0 do
+      ratio = (favourites + retweets) / followers
+      IO.inspect("Ratio: " <> Float.to_string(ratio))
+    else
+      ratio = favourites + retweets
+      IO.inspect("Ratio: " <> Integer.to_string(ratio))
+    end
+  end
+
+  defp calculate_values(tweet) do
     retweeted_status = tweet["message"]["tweet"]["retweeted_status"]
     if retweeted_status != nil do
       favourites = retweeted_status["favorite_count"]
       retweets = retweeted_status["retweet_count"]
       followers = retweeted_status["user"]["followers_count"]
 
-      if followers != 0 do
-        ratio = (favourites + retweets) / followers
-        IO.inspect("Ratio: " <> Float.to_string(ratio))
-      else
-        ratio = favourites + retweets
-        IO.inspect("Ratio: " <> Integer.to_string(ratio))
-      end
+      calculate_ratio(favourites, retweets, followers)
     else
       IO.inspect(%{"retweeted_status" => retweeted_status})
     end
@@ -45,7 +49,7 @@ defmodule EngagementWorker do
     else
       tweet
       |> parse_tweet()
-      |> calculate_ratio()
+      |> calculate_values()
     end
   end
 end
