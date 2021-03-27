@@ -1,15 +1,21 @@
-# Lab1
------
-# Topic: *Streaming Twitter sentiment analysis system*
+# Labs: *Streaming Twitter sentiment analysis system*
 ### Author: *Serghei Derevenco*
 -----
-## Implemented features
+## Implemented features for Lab1
 1. Reading 2 SSE streams of actual Twitter API tweets in JSON format using the following project: https://github.com/cwc/eventsource_ex;  
 2. Creating the following entitties: Worker, Router, Connection, WorkerSupervisor;  
 3. WorkerSupervisor was implemented as DynamicSupervisor;  
-4. Also was implemented feature for getting text of every tweet.
-5. Solved bug with SSE connection restarting.  
+4. Also was implemented feature for getting text of every tweet;  
+5. Solved bug with SSE connection restarting;  
 5. Link to screencast: https://youtu.be/PRkw0sKxn7c  
+-----
+## Implemented features for Lab2
+1. Added Dynamic Supervisor + Worker to compute the engagement ratio;  
+2. Created data structures: (tweet + user_name + sentiment_score/engagement_ratio);  
+3. Those data structures are redirected to Sink Actor;  
+4. Implemented a simple backpressure mechanism, where data is sending in bathes of 128 elements;  
+5. After that bathes are stored in `tweets` collection of Mongo DB.  
+5. Link to screencast: https://youtu.be/klZ30QxEGRo  
 -----
 ## To use
 * Make a pull request to a remote Docker container: `docker pull alexburlacu/rtp-server:faf18x`.

@@ -26,9 +26,10 @@ defmodule Sink do
   def handle_cast(:batch_of_data, queue) do
     spawn(fn ->
       Enum.each(queue, fn item ->
-        insert_to_db(item, "tweets1")
+        insert_to_db(item, "tweets")
       end)
     end)
+
     {:noreply, []}
   end
 
