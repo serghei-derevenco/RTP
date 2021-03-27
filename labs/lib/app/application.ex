@@ -6,6 +6,10 @@ defmodule App.Application do
     children = [
 
       %{
+        id: Sink,
+        start: {Sink, :start_link, [""]}
+      },
+      %{
         id: EngagementWorker,
         start: {EngagementWorker, :start_link, [""]}
       },
@@ -27,11 +31,11 @@ defmodule App.Application do
       },
       %{
         id: Connection1,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/1"]}
+        start: {ServerConnection, :start_link, ["http://localhost:4000/tweets/1"]}
       },
       %{
         id: Connection2,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/2"]}
+        start: {ServerConnection, :start_link, ["http://localhost:4000/tweets/2"]}
       }
 
     ]

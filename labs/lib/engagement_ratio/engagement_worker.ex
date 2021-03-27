@@ -6,7 +6,7 @@ defmodule EngagementWorker do
   end
 
   def init(tweet) do
-    {:ok, %{name: tweet}}
+    {:ok, tweet}
   end
 
   def handle_cast({:engagement_worker, tweet}, _state) do
@@ -22,11 +22,9 @@ defmodule EngagementWorker do
 
   defp calculate_ratio(favourites, retweets, followers) do
     if followers != 0 do
-      ratio = (favourites + retweets) / followers
-      IO.inspect("Ratio: " <> Float.to_string(ratio))
+      (favourites + retweets) / followers
     else
-      ratio = favourites + retweets
-      IO.inspect("Ratio: " <> Integer.to_string(ratio))
+      favourites + retweets
     end
   end
 
@@ -37,9 +35,13 @@ defmodule EngagementWorker do
       retweets = retweeted_status["retweet_count"]
       followers = retweeted_status["user"]["followers_count"]
 
-      calculate_ratio(favourites, retweets, followers)
-    else
-      IO.inspect(%{"retweeted_status" => retweeted_status})
+      ratio = calculate_ratio(favourites, retweets, followers)
+
+      user = tweet["message"]["tweet"]["user"]["screen_name"]
+
+      dict = %{user: user, tweet: tweet, engagement_ratio: ratio}
+
+      GenServer.cast(Sink, {:data, dict})
     end
   end
 

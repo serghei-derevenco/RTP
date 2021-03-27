@@ -1,11 +1,11 @@
-defmodule Connection do
+defmodule ServerConnection do
 
   def start_link(url) do
     func = spawn(__MODULE__, :get_tweet, [])
     {:ok, pid} = EventsourceEx.new(url, stream_to: func)
 
     Process.monitor(pid)
-    
+
     receive do
       error ->
         {:ok, pid} = EventsourceEx.new(url, stream_to: func)
@@ -26,7 +26,7 @@ defmodule Connection do
       id: __MODULE__,
       start: {__MODULE__, :start_link, [opts]},
       type: :worker,
-      restart: :permanent,
+      restart: :permanent
     }
   end
 end

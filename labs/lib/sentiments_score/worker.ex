@@ -6,19 +6,23 @@ defmodule Worker do
   end
 
   def init(tweet) do
-    {:ok, %{name: tweet}}
+    {:ok, tweet}
   end
 
   def handle_cast({:worker, tweet}, _state) do
-    #show_score(tweet)
+    show_score(tweet)
     {:noreply, %{}}
   end
 
   defp parse_tweet(tweet) do
-    chars = [".", ",", "!", "?", ":", ";"]
     map = Map.from_struct(tweet)
     {:ok, json} = JSON.decode(map.data)
-    json["message"]["tweet"]["text"]
+    json
+  end
+
+  defp get_emotions(tweet) do
+    chars = [".", ",", "!", "?", ":", ";"]
+    tweet["message"]["tweet"]["text"]
     |> String.replace(chars, "")
     |> String.split(" ", trim: true)
   end
@@ -33,10 +37,15 @@ defmodule Worker do
     if String.contains?(tweet.data, "panic") do
       IO.inspect(%{"Panic message:" => tweet})
     else
-      tweet
-      |> parse_tweet()
-      |> calculate_values()
-      |> IO.inspect()
+      parsed_tweet = parse_tweet(tweet)
+      emotions = get_emotions(parsed_tweet)
+      values = calculate_values(emotions)
+
+      user = parsed_tweet["message"]["tweet"]["user"]["screen_name"]
+
+      dict = %{user: user, tweet: parsed_tweet, sentiment_score: values}
+
+      GenServer.cast(Sink, {:data, dict})
     end
   end
 end

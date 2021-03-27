@@ -1,9 +1,9 @@
-defmodule Lab1.MixProject do
+defmodule Labs.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :lab1,
+      app: :labs,
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -24,7 +24,8 @@ defmodule Lab1.MixProject do
     [
       {:eventsource_ex, "~> 0.0.2"},
       {:poison, "~> 3.1"},
-      {:json, "~> 1.4.1"}
+      {:json, "~> 1.4.1"},
+      {:mongodb, "~> 0.5.1"}
     ]
   end
 end
