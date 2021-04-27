@@ -26,18 +26,13 @@ defmodule Sink do
   def handle_cast(:batch_of_data, queue) do
     IO.puts("-> Inserting batch of data to db...")
     IO.inspect(queue)
-
-    spawn(fn ->
-      Enum.each(queue, fn item ->
-        insert_to_db(item)
-      end)
-    end)
+    insert_to_db(queue)
 
     {:noreply, []}
   end
 
-  defp insert_to_db(message) do
+  defp insert_to_db(list) do
     {:ok, conn} = Mongo.start_link(url: "mongodb://localhost:27017/rtp_db")
-    Mongo.insert_one!(conn, "tweets", message)
+    Mongo.insert_many(conn, "tweets", list)
   end
 end
