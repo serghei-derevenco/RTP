@@ -39,9 +39,7 @@ defmodule EngagementWorker do
 
       user = tweet["message"]["tweet"]["user"]["screen_name"]
 
-      dict = %{user: user, tweet: tweet, engagement_ratio: ratio}
-
-      GenServer.cast(Sink, {:data, dict})
+      GenServer.cast(Aggregator, {:engagement_ratio, {user, tweet, ratio}})
     end
   end
 

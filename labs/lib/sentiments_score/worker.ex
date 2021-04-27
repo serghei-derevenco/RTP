@@ -43,9 +43,7 @@ defmodule Worker do
 
       user = parsed_tweet["message"]["tweet"]["user"]["screen_name"]
 
-      dict = %{user: user, tweet: parsed_tweet, sentiment_score: values}
-
-      GenServer.cast(Sink, {:data, dict})
+      GenServer.cast(Aggregator, {:sentiment_score, {user, parsed_tweet, values}})
     end
   end
 end

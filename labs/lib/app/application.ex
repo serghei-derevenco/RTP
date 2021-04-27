@@ -6,6 +6,10 @@ defmodule App.Application do
     children = [
 
       %{
+        id: Aggregator,
+        start: {Aggregator, :start_link, [""]}
+      },
+      %{
         id: Sink,
         start: {Sink, :start_link, [""]}
       },

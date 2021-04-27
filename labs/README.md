@@ -13,9 +13,9 @@
 1. Added Dynamic Supervisor + Worker to compute the engagement ratio;  
 2. Created data structures: (tweet + user_name + sentiment_score/engagement_ratio);  
 3. Those data structures are redirected to Sink Actor;  
-4. Implemented a simple backpressure mechanism, where data is sending in bathes of 128 elements;  
+4. Implemented a simple backpressure mechanism, where data is collecting into batches and then every 200 ms is sending;  
 5. After that bathes are stored in `tweets` collection of Mongo DB.  
-5. Link to screencast: https://youtu.be/klZ30QxEGRo  
+5. Link to screencast: https://youtu.be/93sBBEwuuU8   
 -----
 ## To use
 * Make a pull request to a remote Docker container: `docker pull alexburlacu/rtp-server:faf18x`.
