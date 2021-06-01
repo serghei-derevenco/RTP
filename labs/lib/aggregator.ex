@@ -32,6 +32,7 @@ defmodule Aggregator do
 
   defp send_map(initial_map, new_map) do
     map = Map.merge(initial_map, new_map)
-    GenServer.cast(Sink, {:data, map})
+    GenServer.cast(Broker, {:data, map})
+    # GenServer.cast(Sink, {:data, map})
   end
 end

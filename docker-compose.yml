@@ -1,0 +1,20 @@
+version: "3.6"
+
+services:
+  lab3:
+    container_name: broker
+    build:
+      context: message_broker
+    ports:
+      - 4040:4040
+  labs:
+    container_name: client
+    build:
+      context: labs
+    depends_on:
+      - rtp-tweets-faf18x
+  rtp-tweets-faf18x:
+    image: alexburlacu/rtp-server:faf18x
+    container_name: rtp-tweets-faf18x
+    ports:
+      - 4000:4000

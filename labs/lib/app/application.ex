@@ -6,6 +6,10 @@ defmodule App.Application do
     children = [
 
       %{
+        id: Broker,
+        start: {Broker, :start_link, ['rtp-broker', 4040]},
+      },
+      %{
         id: Aggregator,
         start: {Aggregator, :start_link, [""]}
       },
@@ -35,13 +39,12 @@ defmodule App.Application do
       },
       %{
         id: Connection1,
-        start: {ServerConnection, :start_link, ["http://localhost:4000/tweets/1"]}
+        start: {ServerConnection, :start_link, ["rtp-tweets-faf18x:4000/tweets/1"]}
       },
       %{
         id: Connection2,
-        start: {ServerConnection, :start_link, ["http://localhost:4000/tweets/2"]}
+        start: {ServerConnection, :start_link, ["rtp-tweets-faf18x:4000/tweets/2"]}
       }
-
     ]
 
     opts = [strategy: :one_for_one, name: App.Supervisor]
