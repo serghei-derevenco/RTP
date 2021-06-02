@@ -1,4 +1,4 @@
-defmodule MessageBroker.MixProject do
+defmodule Client.MixProject do
   use Mix.Project
 
   def project do

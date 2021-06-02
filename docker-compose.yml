@@ -1,14 +1,20 @@
 version: "3.6"
 
 services:
-  lab3:
-    container_name: broker
+  broker:
+    container_name: mes_broker
     build:
-      context: message_broker
+      context: broker
     ports:
       - 4040:4040
-  labs:
+  lab3:
     container_name: client
+    build:
+      context: client
+    depends_on:
+      - broker
+  labs:
+    container_name: app
     build:
       context: labs
     depends_on:

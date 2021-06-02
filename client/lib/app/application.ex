@@ -5,8 +5,8 @@ defmodule App.Application do
 
     children = [
       %{
-        id: TcpServer,
-        start: {TcpServer, :accept, [4040]}
+        id: Client,
+        start: {Client, :accept, [4040]}
       }
     ]
 
