@@ -5,8 +5,12 @@ defmodule App.Application do
 
     children = [
       %{
-        id: Broker,
-        start: {Broker, :accept, [4040]}
+        id: Client,
+        start: {Client, :accept, [4040]}
+      },
+      %{
+        id: Server,
+        start: {TcpServer, :listen, [4040]}
       }
     ]
 

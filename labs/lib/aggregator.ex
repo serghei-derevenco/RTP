@@ -20,19 +20,14 @@ defmodule Aggregator do
     {:noreply, %{}}
   end
 
-  defp add_to_map(value_type, user, tweet, value, initial_map) do
-    if value_type == "score" do
-      new_map = %{user: user, tweet: tweet, sentiment_score: value}
-      send_map(initial_map, new_map)
-    else
-      new_map = %{user: user, tweet: tweet, engagement_ratio: value}
-      send_map(initial_map, new_map)
-    end
+  defp add_to_map(topic, user, tweet, value, initial_map) do
+    new_map = %{user: user, tweet: tweet, sentiment_score: value}
+    send_map(topic, initial_map, new_map)
   end
 
-  defp send_map(initial_map, new_map) do
+  defp send_map(topic, initial_map, new_map) do
     map = Map.merge(initial_map, new_map)
-    Broker.sendMap("data", map)
+    Broker.send_message(topic, map)
     # GenServer.cast(Sink, {:data, map})
   end
 end

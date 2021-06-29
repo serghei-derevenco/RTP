@@ -10,13 +10,21 @@ defmodule Broker do
     GenServer.start_link(__MODULE__, %{socket: socket}, name: __MODULE__)
   end
 
-  def sendMap(topic, map) do
-    IO.puts("Sending data to client ->")
-    GenServer.cast(__MODULE__, {:data, %{type: "data", topic: topic, data: map}})
+  def send_message(topic, message) do
+    IO.puts("Sending data to server ->")
+    GenServer.cast(__MODULE__, {:data, {topic, message}})
   end
 
-  def handle_cast({:data, map}, state) do
-    :gen_tcp.send(state.socket, map)
+  def handle_cast({:data, {topic, message}}, state) do
+    data = encode_message(topic, message)
+    :gen_tcp.send(state.socket, data)
     {:noreply, state}
+  end
+
+  defp encode_message(topic, message) do
+    Poison.encode!(%{
+      topic: topic,
+      data: message
+    })
   end
 end
