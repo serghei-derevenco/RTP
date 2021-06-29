@@ -38,8 +38,9 @@ defmodule EngagementWorker do
       ratio = calculate_ratio(favourites, retweets, followers)
 
       user = tweet["message"]["tweet"]["user"]["screen_name"]
+      tweet_text = tweet["message"]["tweet"]["text"]
 
-      GenServer.cast(Aggregator, {:engagement_ratio, {user, tweet, ratio}})
+      GenServer.cast(Aggregator, {:engagement_ratio, {user, tweet_text, ratio}})
     end
   end
 

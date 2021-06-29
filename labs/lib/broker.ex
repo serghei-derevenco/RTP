@@ -1,12 +1,14 @@
 defmodule Broker do
   use GenServer
 
+  @host {127, 0, 0, 1}
+
   def init(arg) do
     {:ok, arg}
   end
 
-  def start_link(host, port) do
-    {:ok, socket} = :gen_tcp.connect(host, port, [:binary, active: false])
+  def start_link(port) do
+    {:ok, socket} = :gen_udp.open(port, [:binary, active: true])
     GenServer.start_link(__MODULE__, %{socket: socket}, name: __MODULE__)
   end
 
@@ -17,7 +19,7 @@ defmodule Broker do
 
   def handle_cast({:data, {topic, message}}, state) do
     data = encode_message(topic, message)
-    :gen_tcp.send(state.socket, data)
+    :gen_tcp.send(state.socket, {@host, state.port}, data)
     {:noreply, state}
   end
 

@@ -42,8 +42,9 @@ defmodule Worker do
       values = calculate_values(emotions)
 
       user = parsed_tweet["message"]["tweet"]["user"]["screen_name"]
+      tweet_text = tweet["message"]["tweet"]["text"]
 
-      GenServer.cast(Aggregator, {:sentiment_score, {user, parsed_tweet, values}})
+      GenServer.cast(Aggregator, {:sentiment_score, {user, tweet_text, values}})
     end
   end
 end

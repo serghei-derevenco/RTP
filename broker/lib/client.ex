@@ -1,23 +1,22 @@
 defmodule Client do
   require Logger
 
-  def accept(port) do
-    {:ok, socket} = :gen_tcp.listen(port, [:binary, active: false, reuseaddr: true])
-    Logger.info("Accepting connections on port #{port}")
-    loop_acceptor(socket)
-  end
+  @host {127, 0, 0, 1}
 
-  defp loop_acceptor(socket) do
-    {:ok, client} = TcpServer.accept(socket)
-    pid = spawn_link(__MODULE__, :read, [client])
-    :gen_tcp.controlling_process(client, pid)
-    loop_acceptor(socket)
+  def init(port) do
+    {:ok, socket} = :gen_udp.open(port, [:binary, active: true])
+    Logger.info("Accepting connections on port #{port}")
+    read(socket)
   end
 
   def read(socket) do
     try do
-      {:ok, data} = :gen_tcp.recv(socket, 0)
-      parse_message(socket, data)
+      {:ok, {socket, port, data}} = :gen_udp.recv(socket, 0)
+      if data == "quit" do
+        :gen_udp.close(socket)
+      else
+        parse_message(socket, port, data)
+      end
     rescue
       _ -> Subscriber.unsubscribe(socket)
     end

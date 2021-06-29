@@ -7,7 +7,7 @@ defmodule App.Application do
 
       %{
         id: Broker,
-        start: {Broker, :start_link, ['rtp-broker', 4040]},
+        start: {Broker, :start_link, [2052]},
       },
       %{
         id: Aggregator,
