@@ -1,9 +1,7 @@
 defmodule Client do
   require Logger
 
-  @host {127, 0, 0, 1}
-
-  def init(port) do
+  def start(port) do
     {:ok, socket} = :gen_udp.open(port, [:binary, active: true])
     Logger.info("Accepting connections on port #{port}")
     read(socket)
@@ -15,7 +13,7 @@ defmodule Client do
       if data == "quit" do
         :gen_udp.close(socket)
       else
-        parse_message(socket, port, data)
+        parse_message(socket, data)
       end
     rescue
       _ -> Subscriber.unsubscribe(socket)

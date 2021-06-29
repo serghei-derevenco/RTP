@@ -6,8 +6,14 @@ defmodule App.Application do
   def start(_type, _args) do
 
     children = [
-      {:ok, _pid} = Supervisor.start_link([{UDPServer, @port}], strategy: :one_for_one)
-      {:ok, _pid} = Supervisor.start_link([{UDPServer, @port}], strategy: :one_for_one)
+      %{
+        id: Client,
+        start: {Client, :start, [@port]}
+      },
+      %{
+        id: Server,
+        start: {UdpServer, :start, [@port]}
+      }
     ]
 
     opts = [strategy: :one_for_one]
